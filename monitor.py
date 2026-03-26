@@ -6,6 +6,7 @@ Corre diario (alertas de precio) y semanal (informe completo con análisis IA).
 import yfinance as yf
 import smtplib
 import json
+import traceback
 import anthropic
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -286,7 +287,7 @@ Respondé ÚNICAMENTE con JSON válido, sin texto adicional:
 }}"""
 
     message = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-5",
         max_tokens=2000,
         messages=[{"role": "user", "content": prompt}],
     )
@@ -356,14 +357,24 @@ def generar_html_alerta(alertas, data):
 
 def generar_html_informe_semanal(data, alertas):
     """Informe semanal con análisis generado por Claude."""
+    api_key = config.ANTHROPIC_API_KEY
+    print(f"ANTHROPIC_API_KEY configurada: {'sí' if api_key else 'NO — FALTA EL SECRET'} (len={len(api_key)})")
+
     print("Obteniendo noticias...")
-    noticias = get_news()
+    try:
+        noticias = get_news()
+        print(f"Noticias obtenidas: {len(noticias)}")
+    except Exception as e:
+        print(f"Error obteniendo noticias: {e}")
+        noticias = []
 
     print("Generando análisis con Claude...")
     try:
         analisis = generar_analisis_claude(data, noticias)
+        print("Análisis Claude generado correctamente.")
     except Exception as e:
-        print(f"Error en análisis Claude: {e}. Usando fallback básico.")
+        print(f"ERROR en análisis Claude: {e}")
+        traceback.print_exc()
         return _generar_html_basico(data, alertas)
 
     hoy  = datetime.now().strftime("%d/%m/%Y")
