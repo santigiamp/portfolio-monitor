@@ -84,7 +84,7 @@ def get_market_data():
         cambio_1d = (precio_actual - precio_ayer) / precio_ayer * 100
 
         # Cambio semanal: ~5 ruedas atrás
-        precio_semana = float(hist["Close"].iloc[-6]) if len(hist) >= 6 else float(hist["Close"].iloc[0])
+        precio_semana = float(hist["Close"].iloc[-min(6, len(hist))]) if len(hist) > 1 else precio_actual
         cambio_semanal = (precio_actual - precio_semana) / precio_semana * 100
 
         precio_entrada = TICKERS[symbol]["precio_entrada"]
@@ -166,6 +166,22 @@ def evaluar_alertas(data):
                 "symbol": symbol,
                 "mensaje": f"🎯 Take profit alcanzado: +{d['retorno_entrada']:.1f}%. "
                            f"Considerar tomar parcial o revisar stop.",
+            })
+
+        dist_max = d.get("distancia_52w_high")
+        cambio_sem = d.get("cambio_semanal", 0)
+        condicion_a = dist_max is not None and dist_max < -20 and cambio_sem < -8
+        retorno = d["retorno_entrada"]
+        sl_pct = cfg["stop_loss_pct"] * 100
+        margen_sl = retorno - sl_pct
+        condicion_b = retorno < 0 and margen_sl < 15
+        if condicion_a or condicion_b:
+            alertas.append({
+                "nivel": "ALTA",
+                "symbol": symbol,
+                "mensaje": f"⚠️ Condición REVISAR activa: tesis necesita revalidación. "
+                           f"Dist. máx 52s: {dist_max:.1f}%, cambio semanal: {cambio_sem:.1f}%, "
+                           f"retorno entrada: {retorno:.1f}%.",
             })
 
         if d["cambio_1d"] <= -5.0:
@@ -268,9 +284,33 @@ EARNINGS PRÓXIMOS 30 DÍAS:
 {json.dumps(earnings_ctx, ensure_ascii=False, indent=2)}
 
 INSTRUCCIONES:
-- Señal: MANTENER (tesis intacta), VIGILAR (zona de alerta), REVISAR (umbral roto o tesis en riesgo)
+- Señal: MANTENER (tesis intacta), VIGILAR (zona de alerta), REVISAR (umbral roto o tesis en
+  riesgo). Usar REVISAR automáticamente si se cumplen DOS o más de estas condiciones
+  simultáneas: distancia al máximo de 52 semanas > 20% Y cambio semanal < -8%, o retorno
+  desde entrada negativo Y precio dentro del 15% del stop loss.
 - Análisis: interpretá los números, no los describas. Qué significan para la tesis de largo plazo.
-- Noticias: seleccioná solo las relevantes para la tesis (IA, semis, crecimiento cloud, contratos gobierno). Ignorá productos consumer y drama de management sin impacto estratégico.
+  Si hay earnings en los próximos 14 días para esa empresa, agregá al final del análisis
+  un bloque con este formato exacto:
+
+  EARNINGS CHECK — [FECHA]:
+  • Métrica 1: [qué número, qué umbral, qué significa si lo supera o no lo alcanza]
+  • Métrica 2: [ídem]
+  • Métrica 3: [ídem]
+  • Si supera consenso: [1 línea]
+  • Si decepciona: [1 línea]
+
+  Umbrales por empresa:
+  NVDA: gross margin (mínimo 65%), Data Center growth YoY (mínimo 20%),
+  guidance de CapEx de hyperscalers en sus propios earnings.
+  TSM: utilización de fábricas (mínimo 80%), revenue de nodos avanzados <5nm
+  (mínimo 25% YoY), guidance de demanda para H2 del año.
+  PLTR: revenue growth comercial US (mínimo 40% YoY), net revenue retention
+  (mínimo 115%), SBC como % de revenue (debe seguir bajando del 15%).
+
+  Si no hay earnings próximos para esa empresa, omitir el bloque completamente.
+
+- Noticias: seleccioná solo las relevantes para la tesis (IA, semis, crecimiento cloud,
+  contratos gobierno). Ignorá productos consumer y drama de management sin impacto estratégico.
 - Tono: analista directo hablando a otro inversor sofisticado. Sin disclaimers dentro del análisis.
 - Resumen ejecutivo: ¿qué pasó esta semana?, ¿algo urgente?, ¿estado general?
 
@@ -281,7 +321,7 @@ Respondé ÚNICAMENTE con JSON válido, sin texto adicional:
     "NVDA": {{
       "senal": "MANTENER|VIGILAR|REVISAR",
       "razon_senal": "una oración",
-      "analisis": "2-3 párrafos separados por doble salto de línea",
+      "analisis": "2-3 párrafos separados por doble salto de línea. Si hay earnings próximos, incluir bloque EARNINGS CHECK al final.",
       "noticias_relevantes": [
         {{"titular": "...", "contexto": "1 línea: por qué importa para el portafolio"}}
       ]
@@ -293,7 +333,7 @@ Respondé ÚNICAMENTE con JSON válido, sin texto adicional:
 }}"""
 
     message = client.messages.create(
-        model="claude-sonnet-4-5",
+        model="claude-sonnet-4-6",
         max_tokens=2000,
         messages=[{"role": "user", "content": prompt}],
     )
