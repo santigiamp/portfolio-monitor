@@ -650,10 +650,12 @@ def generar_analisis_claude(data_mercado, noticias, tesis_resultados=None):
     noticias_por_ticker = {}
     for n in noticias:
         t = n["ticker"]
-        noticias_por_ticker.setdefault(t, []).append({
-            "titulo": n["titulo"],
-            "fecha": n["fecha"],
-        })
+        noticias_por_ticker.setdefault(t, [])
+        if len(noticias_por_ticker[t]) < 4:  # max 4 noticias por ticker para no exceder rate limit
+            noticias_por_ticker[t].append({
+                "titulo": n["titulo"],
+                "fecha": n["fecha"],
+            })
 
     prompt = f"""Eres un analista financiero especializado en tecnologia y semiconductores.
 Analiza el estado de este portafolio y genera un informe semanal estructurado.
