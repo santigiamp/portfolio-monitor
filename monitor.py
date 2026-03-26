@@ -915,28 +915,44 @@ def generar_html_informe_semanal(data, alertas):
         noticias = []
 
     print("Analizando señales de cambio de paradigma...")
-    try:
-        analisis_paradigma = analizar_cambio_paradigma()
-        nivel_paradigma = analisis_paradigma.get("nivel_global", "VERDE")
-        print(f"Paradigma: {nivel_paradigma}")
-    except Exception as e:
-        print(f"Error en analisis de paradigma: {e}")
-        traceback.print_exc()
-        analisis_paradigma = None
-        nivel_paradigma = "VERDE"
+    analisis_paradigma = None
+    nivel_paradigma = "VERDE"
+    for intento in range(2):
+        try:
+            analisis_paradigma = analizar_cambio_paradigma()
+            nivel_paradigma = analisis_paradigma.get("nivel_global", "VERDE")
+            print(f"Paradigma: {nivel_paradigma}")
+            break
+        except anthropic.RateLimitError:
+            if intento == 0:
+                print("Rate limit en paradigma, esperando 62s y reintentando...")
+                time.sleep(62)
+            else:
+                print("Rate limit persistente en paradigma, continuando sin analisis.")
+        except Exception as e:
+            print(f"Error en analisis de paradigma: {e}")
+            break
 
-    # Esperar para no exceder el rate limit de 30k tokens/min (dos llamadas consecutivas)
-    print("Esperando 62s para respetar rate limit antes de segunda llamada a Claude...")
+    print("Esperando 62s antes de segunda llamada a Claude (rate limit)...")
     time.sleep(62)
 
     print("Generando analisis con Claude...")
-    try:
-        analisis = generar_analisis_claude(data, noticias, tesis_resultados)
-        print("Analisis Claude generado correctamente.")
-    except Exception as e:
-        print(f"ERROR en analisis Claude: {e}")
-        traceback.print_exc()
-        return _generar_html_basico(data, alertas)
+    for intento in range(2):
+        try:
+            analisis = generar_analisis_claude(data, noticias, tesis_resultados)
+            print("Analisis Claude generado correctamente.")
+            break
+        except anthropic.RateLimitError:
+            if intento == 0:
+                print("Rate limit en analisis principal, esperando 62s y reintentando...")
+                time.sleep(62)
+            else:
+                print("Rate limit persistente en analisis principal.")
+                return _generar_html_basico(data, alertas)
+        except Exception as e:
+            print(f"ERROR en analisis Claude: {e}")
+            traceback.print_exc()
+            return _generar_html_basico(data, alertas)
 
     hoy  = datetime.now().strftime("%d/%m/%Y")
     hora = datetime.now().strftime("%H:%M")
