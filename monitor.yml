@@ -1,0 +1,60 @@
+name: Portfolio Monitor
+
+on:
+  schedule:
+    # Chequeo diario: lunes a viernes a las 22:00 UTC (19:00 ARG)
+    - cron: '0 22 * * 1-5'
+    # Informe semanal: todos los lunes a las 12:00 UTC (09:00 ARG)
+    - cron: '0 12 * * 1'
+  workflow_dispatch:  # Permite correr manualmente desde GitHub
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install yfinance
+
+      - name: Run daily alerts (weekdays)
+        if: github.event.schedule == '0 22 * * 1-5'
+        env:
+          NVDA_PRECIO_ENTRADA: ${{ secrets.NVDA_PRECIO_ENTRADA }}
+          TSM_PRECIO_ENTRADA: ${{ secrets.TSM_PRECIO_ENTRADA }}
+          PLTR_PRECIO_ENTRADA: ${{ secrets.PLTR_PRECIO_ENTRADA }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python monitor.py diario
+
+      - name: Run weekly report (Mondays)
+        if: github.event.schedule == '0 12 * * 1'
+        env:
+          NVDA_PRECIO_ENTRADA: ${{ secrets.NVDA_PRECIO_ENTRADA }}
+          TSM_PRECIO_ENTRADA: ${{ secrets.TSM_PRECIO_ENTRADA }}
+          PLTR_PRECIO_ENTRADA: ${{ secrets.PLTR_PRECIO_ENTRADA }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python monitor.py semanal
+
+      - name: Run manual trigger (both modes)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          NVDA_PRECIO_ENTRADA: ${{ secrets.NVDA_PRECIO_ENTRADA }}
+          TSM_PRECIO_ENTRADA: ${{ secrets.TSM_PRECIO_ENTRADA }}
+          PLTR_PRECIO_ENTRADA: ${{ secrets.PLTR_PRECIO_ENTRADA }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          python monitor.py diario
+          python monitor.py semanal
