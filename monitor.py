@@ -14,6 +14,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime, date, timedelta
 import os
+import time
 
 
 class config:
@@ -923,6 +924,10 @@ def generar_html_informe_semanal(data, alertas):
         traceback.print_exc()
         analisis_paradigma = None
         nivel_paradigma = "VERDE"
+
+    # Esperar para no exceder el rate limit de 30k tokens/min (dos llamadas consecutivas)
+    print("Esperando 62s para respetar rate limit antes de segunda llamada a Claude...")
+    time.sleep(62)
 
     print("Generando analisis con Claude...")
     try:
