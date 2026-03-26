@@ -306,60 +306,58 @@ PARADIGMA_NIVELES = {
 }
 
 
-def analizar_cambio_paradigma(client=None):
+def analizar_cambio_paradigma(noticias, client=None):
     """
-    Usa Claude con web search para buscar señales de cambio de paradigma
-    en las ultimas 2 semanas. Retorna evaluacion estructurada.
+    Analiza señales de cambio de paradigma en computacion de IA
+    usando las noticias ya obtenidas (sin web search para respetar rate limits).
     """
     if client is None:
         client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
 
-    señales_ctx = json.dumps(PARADIGMA_SEÑALES, ensure_ascii=False, indent=2)
+    señales_ctx = json.dumps(
+        {k: {"label": v["label"], "umbral_alerta": v["umbral_alerta"]}
+         for k, v in PARADIGMA_SEÑALES.items()},
+        ensure_ascii=False, indent=2
+    )
 
-    prompt = f"""Eres un analista de tecnologia vigilando señales de cambio de paradigma en computacion de IA.
+    # Solo titulos de noticias para minimizar tokens
+    titulos = [n["titulo"] for n in noticias[:30]]
+    noticias_ctx = json.dumps(titulos, ensure_ascii=False)
 
-El inversor tiene posiciones en NVDA, TSM y PLTR con horizonte de 3 años.
-Su tesis: la infraestructura actual de IA (GPU clusters + transformers + foundry avanzado) domina los proximos 3 años.
-Su regla de salida: si aparece evidencia concreta de un paradigma superador, sale de las posiciones.
+    prompt = f"""Eres un analista vigilando señales de cambio de paradigma en computacion de IA.
 
-Señales que vigilamos:
+Tesis del portafolio (NVDA/TSM/PLTR): la infraestructura actual de IA (GPU clusters + transformers + foundry avanzado) domina los proximos 3 anios.
+Regla de salida: si aparece evidencia concreta de un paradigma superador, se sale de las posiciones.
+
+Areas vigiladas (key: label | umbral_alerta):
 {señales_ctx}
 
-TAREA:
-1. Busca en la web noticias, papers y anuncios de los ultimos 14 dias relacionados con estas señales.
-2. Evalua si hay evidencia nueva y concreta (no especulativa) de avance en alguna de estas areas.
-3. Asigna un nivel de urgencia por señal: RUIDO (especulativo/incremental), SEÑAL (avance real pero temprano), ALERTA (cambio concreto que amenaza la tesis).
-4. Da un nivel global del paradigma: VERDE (sin cambios relevantes), AMARILLO (señales tempranas), ROJO (amenaza concreta a la tesis).
+Noticias de los ultimos 7 dias:
+{noticias_ctx}
 
-CRITERIOS ESTRICTOS para ALERTA:
-- Debe ser un resultado empirico demostrado, no una promesa o prototipo de laboratorio
-- Debe tener escala o path claro a escala (no solo chip de investigacion)
-- Debe impactar directamente la demanda de GPU o la necesidad de foundry avanzado
+Evalua si alguna noticia constituye evidencia de avance en estas areas. Se estricto: ALERTA solo si es resultado empirico demostrado con path a escala, no especulacion.
 
 Responde UNICAMENTE con JSON valido:
 {{
   "nivel_global": "VERDE|AMARILLO|ROJO",
-  "resumen": "2-3 oraciones sobre el estado actual del paradigma",
+  "resumen": "2 oraciones sobre el estado del paradigma",
   "señales_detectadas": [
     {{
-      "area": "nombre del area (usar keys de PARADIGMA_SEÑALES)",
+      "area": "key del area",
       "nivel": "RUIDO|SEÑAL|ALERTA",
-      "titulo": "que se encontro",
-      "detalle": "1-2 oraciones: que es concreto, que es especulativo, por que importa o no para la tesis",
-      "fuente": "nombre de publicacion o institucion"
+      "titulo": "noticia relevante",
+      "detalle": "por que importa o no para la tesis"
     }}
   ],
-  "recomendacion": "una oracion sobre que hacer con el portfolio dados estos hallazgos"
+  "recomendacion": "una oracion"
 }}"""
 
     message = client.messages.create(
         model="claude-sonnet-4-20250514",
-        max_tokens=2000,
-        tools=[{"type": "web_search_20250305", "name": "web_search"}],
+        max_tokens=1000,
         messages=[{"role": "user", "content": prompt}],
     )
 
-    # Extraer el texto de la respuesta (puede venir despues de tool_use blocks)
     text = ""
     for block in message.content:
         if hasattr(block, "text"):
@@ -919,7 +917,7 @@ def generar_html_informe_semanal(data, alertas):
     nivel_paradigma = "VERDE"
     for intento in range(2):
         try:
-            analisis_paradigma = analizar_cambio_paradigma()
+            analisis_paradigma = analizar_cambio_paradigma(noticias)
             nivel_paradigma = analisis_paradigma.get("nivel_global", "VERDE")
             print(f"Paradigma: {nivel_paradigma}")
             break
