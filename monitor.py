@@ -250,11 +250,15 @@ def generar_analisis_claude(data_mercado, noticias):
     # Earnings próximos (30 días)
     hoy = date.today()
     earnings_ctx = []
+    hyperscalers_proximos = []
+    HYPERSCALERS = {"MSFT", "GOOG", "AMZN", "META"}
     for symbol, fecha_str in EARNINGS_CALENDAR.items():
         fecha = datetime.strptime(fecha_str, "%Y-%m-%d").date()
         dias = (fecha - hoy).days
         if 0 <= dias <= 30:
             earnings_ctx.append({"empresa": symbol, "fecha": fecha_str, "dias_restantes": dias})
+        if symbol in HYPERSCALERS and 0 <= dias <= 14:
+            hyperscalers_proximos.append({"empresa": symbol, "fecha": fecha_str, "dias_restantes": dias})
 
     # Noticias agrupadas por ticker
     noticias_por_ticker = {}
@@ -283,6 +287,9 @@ NOTICIAS ÚLTIMOS 7 DÍAS:
 EARNINGS PRÓXIMOS 30 DÍAS:
 {json.dumps(earnings_ctx, ensure_ascii=False, indent=2)}
 
+HYPERSCALERS CON EARNINGS EN LOS PRÓXIMOS 14 DÍAS:
+{json.dumps(hyperscalers_proximos, ensure_ascii=False, indent=2)}
+
 INSTRUCCIONES:
 - Señal: MANTENER (tesis intacta), VIGILAR (zona de alerta), REVISAR (umbral roto o tesis en
   riesgo). Usar REVISAR automáticamente si se cumplen DOS o más de estas condiciones
@@ -308,6 +315,23 @@ INSTRUCCIONES:
   (mínimo 115%), SBC como % de revenue (debe seguir bajando del 15%).
 
   Si no hay earnings próximos para esa empresa, omitir el bloque completamente.
+
+- Bloque HYPERSCALERS para NVDA: si la lista "HYPERSCALERS CON EARNINGS EN LOS PRÓXIMOS
+  14 DÍAS" tiene al menos una empresa, agregá al final del análisis de NVDA (después del
+  EARNINGS CHECK propio si lo hay) un bloque con este formato exacto:
+
+  EARNINGS CHECK — HYPERSCALERS ([lista de empresas y fechas]):
+  • CapEx guidance agregado: [qué número vigilar, qué crecimiento YoY mínimo sostiene la
+    demanda de GPUs, qué implicaría una reducción o pausa]
+  • Lenguaje sobre AI infrastructure: [señales positivas vs. señales de alerta en el
+    commentary de management]
+  • Data center revenue mix: [qué porcentaje del revenue total representa el segmento
+    cloud/AI, qué dirección indica para la demanda de aceleradores]
+  • Mención explícita de NVDA o GPUs: [presencia o ausencia, tono]
+  • Si el CapEx guidance supera expectativas: [1 línea de impacto en la tesis de NVDA]
+  • Si el CapEx guidance decepciona o hay lenguaje cauteloso: [1 línea de riesgo]
+
+  Si la lista de hyperscalers próximos está vacía, omitir este bloque completamente.
 
 - Noticias: seleccioná solo las relevantes para la tesis (IA, semis, crecimiento cloud,
   contratos gobierno). Ignorá productos consumer y drama de management sin impacto estratégico.
