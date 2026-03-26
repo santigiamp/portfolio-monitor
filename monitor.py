@@ -4,6 +4,7 @@ Corre diario (alertas de precio) y semanal (informe completo con análisis IA).
 """
 
 import yfinance as yf
+import feedparser
 import smtplib
 import json
 import traceback
@@ -111,7 +112,7 @@ def get_market_data():
 # ── Noticias ─────────────────────────────────────────────────────────────────
 
 def get_news(tickers=None):
-    """Trae noticias de los últimos 7 días vía yfinance para cada ticker."""
+    """Trae noticias de los últimos 7 días vía RSS de Yahoo Finance."""
     if tickers is None:
         tickers = NEWS_TICKERS
 
@@ -120,20 +121,25 @@ def get_news(tickers=None):
 
     for symbol in tickers:
         try:
-            t = yf.Ticker(symbol)
-            items = t.news or []
-            for item in items[:15]:
-                pub_ts = item.get("providerPublishTime", 0)
-                pub_dt = datetime.fromtimestamp(pub_ts)
+            url = f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={symbol}&region=US&lang=en-US"
+            feed = feedparser.parse(url)
+            for entry in feed.entries[:10]:
+                # feedparser devuelve published_parsed como time.struct_time UTC
+                if hasattr(entry, "published_parsed") and entry.published_parsed:
+                    pub_dt = datetime(*entry.published_parsed[:6])
+                else:
+                    pub_dt = datetime.now()
+
                 if pub_dt >= cutoff:
                     noticias.append({
                         "ticker": symbol,
-                        "titulo": item.get("title", ""),
+                        "titulo": entry.get("title", ""),
                         "fecha": pub_dt.strftime("%Y-%m-%d"),
-                        "url": item.get("link", ""),
+                        "url": entry.get("link", ""),
                     })
+            print(f"  {symbol}: {len([n for n in noticias if n['ticker']==symbol])} noticias")
         except Exception as e:
-            print(f"Warning: noticias para {symbol}: {e}")
+            print(f"  Warning: noticias para {symbol}: {e}")
 
     return noticias
 
