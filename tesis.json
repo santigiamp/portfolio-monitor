@@ -1,0 +1,44 @@
+{
+  "_instrucciones": "Actualizar después de cada earnings. Fecha en formato YYYY-MM-DD.",
+  "_version": "1.0",
+
+  "NVDA": {
+    "ultima_actualizacion": "2026-02-26",
+    "periodo": "FY2026-Q4",
+    "metricas": {
+      "gross_margin_pct": 71.1,
+      "data_center_growth_yoy_pct": 65.5,
+      "operating_margin_pct": 60.4,
+      "fcf_margin_pct": 44.8,
+      "guidance_proximo_trimestre": "Positivo"
+    },
+    "notas": "Blackwell lanzado. Compresión de gross margin de 75% a 71% por mix de producto. Monitorear."
+  },
+
+  "TSM": {
+    "ultima_actualizacion": "2026-01-16",
+    "periodo": "FY2025-Q4",
+    "metricas": {
+      "gross_margin_pct": 59.9,
+      "utilizacion_fabricas_pct": 85.0,
+      "revenue_nodos_avanzados_growth_yoy_pct": 31.6,
+      "operating_margin_pct": 50.8,
+      "guidance_proximo_trimestre": "Positivo"
+    },
+    "notas": "Revenue FY2025 +31.6% YoY. Expansión Arizona operativa. Riesgo geopolítico sin cambios."
+  },
+
+  "PLTR": {
+    "ultima_actualizacion": "2026-02-03",
+    "periodo": "FY2025-Q4",
+    "metricas": {
+      "revenue_growth_yoy_pct": 56.2,
+      "revenue_comercial_us_growth_yoy_pct": 54.0,
+      "net_revenue_retention_pct": 120.0,
+      "sbc_pct_revenue": 15.3,
+      "operating_margin_pct": 31.6,
+      "guidance_proximo_trimestre": "Positivo"
+    },
+    "notas": "Crecimiento comercial US acelerando. SBC mejorando desde 24% FY24 a 15.3% FY25. Monitorear hiring."
+  }
+}
