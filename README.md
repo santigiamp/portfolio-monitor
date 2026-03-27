@@ -1,166 +1,166 @@
 # Portfolio Monitor — NVDA / TSM / PLTR
 
-Automated portfolio monitor for a concentrated AI infrastructure thesis.
-Zero cost. No server. Runs entirely on GitHub Actions.
+Monitor automático de portafolio para una tesis concentrada en infraestructura de IA.
+Costo: **$0**. Sin servidor. Corre en GitHub Actions.
 
 ---
 
-## The Investment Thesis
+## La tesis de inversión
 
-This portfolio is a concentrated bet on **AI infrastructure dominance for the next 1–3 years**.
+Este portafolio es una apuesta concentrada en la **dominancia de la infraestructura de IA durante los próximos 1–3 años**.
 
-The core belief: the current AI stack — GPU clusters (NVDA), advanced semiconductor foundry (TSM), and AI-native software platforms (PLTR) — will remain the dominant paradigm through at least 2027. The market is still in the early innings of a multi-year CapEx supercycle driven by hyperscaler demand for compute.
+La hipótesis central: el stack actual de IA — GPU clusters (NVDA), foundry de semiconductores avanzados (TSM), y plataformas de software nativas de IA (PLTR) — va a seguir siendo el paradigma dominante al menos hasta 2027. El mercado está en las primeras etapas de un superciclo de CapEx de varios años impulsado por la demanda de los hyperscalers.
 
-**Portfolio construction:** 100% concentrated in three positions. No diversification. The rationale is that diversification into unrelated assets would dilute the thesis, not reduce risk in any meaningful way given the time horizon.
+**Construcción del portafolio:** 100% concentrado en tres posiciones. Sin diversificación. El argumento es que diversificar en activos no relacionados diluiría la tesis sin reducir el riesgo real dado el horizonte temporal.
 
-**Exit rule:** Price alone is never a reason to sell. Exit is triggered when the thesis breaks — specific fundamental thresholds are breached, or a genuine paradigm shift in computing architecture becomes evident.
+**Regla de salida:** El precio solo nunca es razón para vender. La salida se activa cuando la tesis se rompe — umbrales fundamentales específicos son violados, o un cambio genuino de paradigma en arquitectura de cómputo se vuelve evidente.
 
 ---
 
-## Per-Company Thesis
+## Tesis por empresa
 
 ### NVIDIA (NVDA)
-**Why own it:** NVDA is the only company with a full-stack AI platform — silicon (H100/B200), software (CUDA ecosystem), networking (InfiniBand), and enterprise frameworks. The CUDA moat is 15+ years deep and represents a switching cost that neither AMD, Intel, nor custom silicon (TPUs, Trainium) has meaningfully eroded. Data Center revenue is the single most important line item.
+**Por qué tenerla:** NVDA es la única empresa con una plataforma de IA full-stack — silicon (H100/B200), software (ecosistema CUDA), networking (InfiniBand) y frameworks empresariales. El moat de CUDA tiene más de 15 años de profundidad y representa un costo de switching que AMD, Intel, ni silicon propio (TPUs, Trainium) ha erosionado significativamente. El revenue de Data Center es la línea más importante a seguir.
 
-**Thesis confirmed by:**
-| Metric | Minimum threshold |
-|--------|-------------------|
+**La tesis se confirma con:**
+| Métrica | Umbral mínimo |
+|---------|--------------|
 | Gross Margin | ≥ 65% |
-| Data Center Revenue Growth YoY | ≥ 20% |
+| Crecimiento Data Center YoY | ≥ 20% |
 | Operating Margin | ≥ 50% |
 
-**Thesis breaks if:**
-- Gross margin collapses to <65% (signals Blackwell yields or competition issues)
-- Data Center growth decelerates below 20% YoY for two consecutive quarters
-- Any hyperscaler meaningfully reduces GPU orders YoY while maintaining compute capacity
+**La tesis se rompe si:**
+- El gross margin cae por debajo del 65% (señala problemas de yields en Blackwell o presión competitiva)
+- El crecimiento de Data Center desacelera por debajo del 20% YoY dos trimestres consecutivos
+- Algún hyperscaler reduce órdenes de GPU YoY manteniendo su capacidad de cómputo
 
-**Key indicator to watch:** Hyperscaler CapEx guidance (MSFT, GOOG, AMZN, META earnings all matter more than NVDA's own earnings for forward signal).
+**Indicador clave:** El CapEx guidance de los hyperscalers (los earnings de MSFT, GOOG, AMZN y META importan más que los propios de NVDA como señal adelantada).
 
 ---
 
 ### TSMC (TSM)
-**Why own it:** TSMC is a structural monopoly. No other foundry on earth can manufacture sub-3nm chips at scale. Without TSMC there is no NVDA Blackwell, no Apple Silicon, no advanced AI chip from any hyperscaler. The geopolitical risk is real but binary — and the global dependency on Taiwanese production makes it a deterrent, not just a risk.
+**Por qué tenerla:** TSMC es un monopolio estructural. No existe otra foundry en el mundo que pueda fabricar chips sub-3nm a escala. Sin TSMC no hay Blackwell, no hay Apple Silicon, no hay chip de IA avanzado de ningún hyperscaler. El riesgo geopolítico es real pero binario — y la dependencia global de la producción taiwanesa actúa como disuasivo, no solo como riesgo.
 
-**Thesis confirmed by:**
-| Metric | Minimum threshold |
-|--------|-------------------|
+**La tesis se confirma con:**
+| Métrica | Umbral mínimo |
+|---------|--------------|
 | Gross Margin | ≥ 53% |
-| Factory Utilization | ≥ 80% |
-| Advanced Nodes (<5nm) Revenue Growth YoY | ≥ 25% |
+| Utilización de fábricas | ≥ 80% |
+| Crecimiento Revenue Nodos <5nm YoY | ≥ 25% |
 
-**Thesis breaks if:**
-- Factory utilization falls below 80% (signals demand destruction, not just inventory correction)
-- Advanced node revenue growth falls below 25% YoY for two quarters
-- Intel Foundry, Samsung, or a new entrant demonstrates credible advanced node yield at scale
+**La tesis se rompe si:**
+- La utilización de fábricas cae por debajo del 80% (señala destrucción de demanda, no solo corrección de inventario)
+- El crecimiento de nodos avanzados cae por debajo del 25% YoY dos trimestres seguidos
+- Intel Foundry, Samsung, o un nuevo competidor demuestra yield creíble en nodos avanzados a escala
 
-**Key risk:** Taiwan Strait geopolitics. This is a binary risk — unhedgeable at the retail level. Position sizing reflects this.
+**Riesgo clave:** Geopolítica del Estrecho de Taiwán. Es un riesgo binario, no hedgeable a nivel retail. El sizing de la posición refleja esto.
 
 ---
 
 ### Palantir (PLTR)
-**Why own it:** PLTR is the only enterprise AI software company with (1) real government contracts at mission-critical scale, (2) a commercial business growing >50% YoY, and (3) a platform (AIP) built specifically for AI-native workflows rather than bolted on. It is the software layer on top of the AI hardware buildout that NVDA and TSM enable.
+**Por qué tenerla:** PLTR es la única empresa de software empresarial de IA con (1) contratos gubernamentales reales a escala mission-critical, (2) un negocio comercial creciendo >50% YoY, y (3) una plataforma (AIP) construida específicamente para workflows nativos de IA en lugar de bolted-on. Es la capa de software encima del buildout de hardware de IA que NVDA y TSM habilitan.
 
-**Thesis confirmed by:**
-| Metric | Threshold |
-|--------|-----------|
-| US Commercial Revenue Growth YoY | ≥ 35% |
+**La tesis se confirma con:**
+| Métrica | Umbral |
+|---------|--------|
+| Crecimiento Revenue Comercial US YoY | ≥ 35% |
 | Net Revenue Retention | ≥ 115% |
-| SBC as % of Revenue | ≤ 20% (declining trend) |
+| SBC como % del Revenue | ≤ 20% (tendencia bajista) |
 | Operating Margin | ≥ 20% |
 
-**Thesis breaks if:**
-- US commercial growth decelerates below 35% YoY (signals AIP is not penetrating enterprise)
-- NRR falls below 115% (signals customers are not expanding usage)
-- SBC trend reverses upward (signals return to pre-profitability culture)
+**La tesis se rompe si:**
+- El crecimiento comercial US desacelera por debajo del 35% YoY (señala que AIP no penetra el enterprise)
+- El NRR cae por debajo del 115% (señala que los clientes no expanden el uso)
+- El SBC revierte su tendencia hacia arriba (señala regresión a cultura pre-rentabilidad)
 
 ---
 
-## Paradigm Shift Monitoring
+## Monitoreo de cambio de paradigma
 
-Beyond per-company fundamentals, the system actively monitors **five structural risks** that could invalidate the entire thesis regardless of individual company metrics:
+Más allá de los fundamentales por empresa, el sistema vigila activamente **cinco riesgos estructurales** que podrían invalidar la tesis completa sin importar las métricas individuales:
 
-| Signal | What would break the thesis |
-|--------|----------------------------|
-| **Neuromorphic Computing** | Benchmark showing >10x energy efficiency vs GPU at scale |
-| **Optical / Photonic Computing** | Photonic chip running LLM inference at real cost advantage vs GPU |
-| **Alternative Architectures** | Non-transformer model matching GPT-4 class quality at <10% of compute |
-| **Hyperscaler CapEx Reversal** | Any hyperscaler cuts GPU orders YoY while compute capacity grows |
-| **Energy Constraints** | Regulation limiting AI data center power consumption in major markets |
+| Señal | Qué rompería la tesis |
+|-------|----------------------|
+| **Neuromorphic Computing** | Benchmark con >10x eficiencia energética vs GPU a escala |
+| **Cómputo Óptico / Fotónico** | Chip fotónico corriendo inferencia de LLM con ventaja de costo real vs GPU |
+| **Arquitecturas Alternativas a Transformers** | Modelo no-transformer igualando GPT-4 class con <10% del cómputo |
+| **Reversión de CapEx en Hyperscalers** | Algún hyperscaler reduce órdenes de GPU YoY mientras su capacidad de cómputo crece |
+| **Restricción Energética Estructural** | Regulación que limite consumo de data centers de IA en mercados relevantes |
 
-The weekly report includes a **paradigm status** section (VERDE / AMARILLO / ROJO) based on Claude's analysis of recent news against these signals.
+El informe semanal incluye una sección de **estado de paradigma** (VERDE / AMARILLO / ROJO) basada en el análisis de Claude sobre las noticias recientes contra estas señales.
 
 ---
 
-## How It Works
+## Cómo funciona
 
 ```
 GitHub Actions (cron)
        │
        ▼
-get_market_data()          ← yfinance: prices, P/E, 52w high/low
+get_market_data()              ← yfinance: precios, P/E, máximo/mínimo 52 semanas
        │
        ▼
-evaluar_alertas()          ← price alerts: stop loss, take profit, 1d drop, earnings proximity
+evaluar_alertas()              ← alertas de precio: stop loss, take profit, caída diaria, earnings
        │
        ▼
-evaluar_tesis()            ← fundamental check: tesis.json vs TESIS_UMBRALES thresholds
+evaluar_tesis()                ← tesis.json vs TESIS_UMBRALES → TESIS_OK / EN_RIESGO / ROTA
        │
        ▼
-analizar_cambio_paradigma()  ← Claude (Sonnet): paradigm shift signals from news headlines
+analizar_cambio_paradigma()    ← Claude Sonnet: señales de paradigma desde titulares → VERDE/AMARILLO/ROJO
        │
        ▼
-generar_analisis_claude()  ← Claude (Sonnet): weekly analysis, signal (MANTENER/VIGILAR/REVISAR)
+generar_analisis_claude()      ← Claude Sonnet: análisis semanal, señal MANTENER/VIGILAR/REVISAR
        │
        ▼
-enviar_email()             ← Gmail SMTP SSL: HTML report to inbox
+enviar_email()                 ← Gmail SMTP SSL: informe HTML al inbox
 ```
 
-**All logic lives in a single file: `monitor.py`**
-**Fundamental data lives in: `tesis.json`** — updated manually after each earnings
+**Toda la lógica vive en un solo archivo: `monitor.py`**
+**Los datos fundamentales viven en: `tesis.json`** — se actualizan manualmente después de cada earnings
 
-### Run modes
+### Modos de ejecución
 
-| Mode | When | What it sends |
-|------|------|---------------|
-| `diario` | Weekdays 19:00 ARG | Email only if CRÍTICA or ALTA alerts exist |
-| `semanal` | Mondays 09:00 ARG | Full HTML report always sent |
+| Modo | Cuándo | Qué envía |
+|------|--------|-----------|
+| `diario` | Lunes a viernes 19:00 ARG | Email solo si hay alertas CRÍTICA o ALTA |
+| `semanal` | Todos los lunes 09:00 ARG | Informe HTML completo, siempre |
 
-### Alert levels
+### Niveles de alerta
 
-| Level | Trigger |
-|-------|---------|
-| 🔴 CRÍTICA | Stop loss hit (NVDA: -25%, TSM: -20%, PLTR: -30%) |
-| 🟠 ALTA | Take profit hit · Single day drop >5% |
-| 🔵 MEDIA | Price within 10% of 52-week low |
-| ⚪ INFO | Earnings in <7 days |
+| Nivel | Cuándo |
+|-------|--------|
+| 🔴 CRÍTICA | Stop loss alcanzado (NVDA: -25%, TSM: -20%, PLTR: -30%) |
+| 🟠 ALTA | Take profit alcanzado · Caída >5% en un día |
+| 🔵 MEDIA | Precio a menos del 10% del mínimo de 52 semanas |
+| ⚪ INFO | Earnings en menos de 7 días |
 
-### Weekly report contents
+### Contenido del informe semanal
 
-- Executive summary (Claude-generated)
-- Per-company signal: **MANTENER** / **VIGILAR** / **REVISAR**
-- Fundamental thesis status per company (TESIS_OK / TESIS_EN_RIESGO / TESIS_ROTA)
-- Relevant news analysis
-- Earnings calendar (next 30 days)
-- Paradigm shift monitoring status
+- Resumen ejecutivo (generado por Claude)
+- Señal por empresa: **MANTENER** / **VIGILAR** / **REVISAR**
+- Estado de tesis fundamental por empresa (TESIS_OK / TESIS_EN_RIESGO / TESIS_ROTA)
+- Análisis de noticias relevantes
+- Calendario de earnings (próximos 30 días)
+- Estado de monitoreo de cambio de paradigma
 
 ---
 
-## Stack
+## Stack técnico
 
-- **Python 3.11** — single file, minimal dependencies
-- **yfinance** — market data (free)
-- **feedparser** — Yahoo Finance RSS for news (free)
-- **anthropic** — Claude Sonnet for weekly AI analysis
-- **Gmail SMTP** — email delivery (free with App Password)
-- **GitHub Actions** — scheduling and execution (free tier)
+- **Python 3.11** — archivo único, dependencias mínimas
+- **yfinance** — datos de mercado (gratis)
+- **feedparser** — RSS de Yahoo Finance para noticias (gratis)
+- **anthropic** — Claude Sonnet para análisis semanal
+- **Gmail SMTP** — envío de emails (gratis con App Password)
+- **GitHub Actions** — scheduling y ejecución (tier gratuito)
 
-**Total running cost: ~$0.02/week** (Claude API calls for weekly report only)
+**Costo operativo total: ~$0.02/semana** (solo las llamadas a Claude API del informe semanal)
 
 ---
 
 ## Setup
 
-### 1. Fork or clone this repo
+### 1. Clonar el repo
 
 ```bash
 git clone https://github.com/santigiamp/portfolio-monitor.git
@@ -168,72 +168,72 @@ cd portfolio-monitor
 pip install -r requirements.txt
 ```
 
-### 2. Gmail App Password
+### 2. Crear Gmail App Password
 
-1. Go to [myaccount.google.com](https://myaccount.google.com)
-2. Security → 2-Step Verification (must be active)
-3. Security → App passwords
-4. Create one named "Portfolio Monitor"
-5. Save the 16-character password
+1. Ir a [myaccount.google.com](https://myaccount.google.com)
+2. Seguridad → Verificación en 2 pasos (debe estar activa)
+3. Seguridad → Contraseñas de aplicaciones
+4. Crear una nueva: "Portfolio Monitor"
+5. Guardar los 16 caracteres que aparecen
 
-### 3. Configure GitHub Secrets
+### 3. Configurar Secrets en GitHub
 
-In your repo: **Settings → Secrets and variables → Actions → New repository secret**
+En tu repo: **Settings → Secrets and variables → Actions → New repository secret**
 
-| Secret | Value |
+| Secret | Valor |
 |--------|-------|
-| `NVDA_PRECIO_ENTRADA` | Your NVDA entry price in USD |
-| `TSM_PRECIO_ENTRADA` | Your TSM entry price in USD |
-| `PLTR_PRECIO_ENTRADA` | Your PLTR entry price in USD |
-| `EMAIL_FROM` | your_account@gmail.com |
-| `EMAIL_TO` | where_you_want_alerts@gmail.com |
-| `GMAIL_APP_PASSWORD` | The 16-char app password |
-| `ANTHROPIC_API_KEY` | Your Anthropic API key (for weekly Claude analysis) |
+| `NVDA_PRECIO_ENTRADA` | Tu precio de entrada en NVDA (USD) |
+| `TSM_PRECIO_ENTRADA` | Tu precio de entrada en TSM (USD) |
+| `PLTR_PRECIO_ENTRADA` | Tu precio de entrada en PLTR (USD) |
+| `EMAIL_FROM` | tu_cuenta@gmail.com |
+| `EMAIL_TO` | donde_recibes@gmail.com |
+| `GMAIL_APP_PASSWORD` | Los 16 caracteres del paso anterior |
+| `ANTHROPIC_API_KEY` | Tu API key de Anthropic (para el análisis semanal) |
 
-### 4. Adapt to your own portfolio
+### 4. Adaptar a tu propio portafolio
 
-1. Edit `TICKERS` in `monitor.py` — change symbols, entry prices, stop/take-profit percentages
-2. Edit `TESIS_UMBRALES` — adjust fundamental thresholds to match your thesis
-3. Edit `EARNINGS_CALENDAR` — update with actual earnings dates each quarter
-4. Edit `tesis.json` — enter actual fundamental metrics after each earnings report
-5. Edit `PARADIGMA_SEÑALES` — customize which paradigm shifts you're watching
+1. Editar `TICKERS` en `monitor.py` — cambiar symbols, precios de entrada, porcentajes de stop/take-profit
+2. Editar `TESIS_UMBRALES` — ajustar los umbrales fundamentales a tu tesis
+3. Editar `EARNINGS_CALENDAR` — actualizar con fechas reales de earnings cada trimestre
+4. Editar `tesis.json` — cargar las métricas reales después de cada earnings
+5. Editar `PARADIGMA_SEÑALES` — personalizar qué cambios de paradigma vigilás
 
-### 5. Run locally
+### 5. Probar localmente
 
 ```bash
-# Daily alerts mode
+# Modo alertas diarias
 python monitor.py diario
 
-# Weekly report mode
+# Modo informe semanal
 python monitor.py semanal
 ```
 
 ---
 
-## Quarterly Maintenance
+## Mantenimiento trimestral
 
-After each earnings cycle:
+Después de cada ciclo de earnings:
 
-1. **Update `tesis.json`** with actual reported metrics (gross margin, growth rates, etc.)
-2. **Update `EARNINGS_CALENDAR`** in `monitor.py` with next quarter dates
-3. **Update entry prices** in GitHub Secrets if you averaged down/up
-4. **Review thresholds** in `TESIS_UMBRALES` — adjust if thesis has evolved
+1. **Actualizar `tesis.json`** con las métricas reales reportadas (gross margin, tasas de crecimiento, etc.)
+2. **Actualizar `EARNINGS_CALENDAR`** en `monitor.py` con las fechas del próximo trimestre
+3. **Actualizar precios de entrada** en los Secrets de GitHub si promediaste la posición
+4. **Revisar umbrales** en `TESIS_UMBRALES` — ajustar si la tesis evolucionó
 
-The system will flag when `tesis.json` is stale (>14 days after earnings without update).
-
----
-
-## Why this exists
-
-I wanted a system that distinguishes between two very different types of risk:
-
-1. **Price risk** — the stock goes down. Managed with stop loss levels. Not necessarily a reason to sell if the thesis is intact.
-2. **Thesis risk** — the fundamental reason for owning the stock breaks. This is the actual reason to sell.
-
-Most retail portfolio tools alert on price. This one alerts on both — and treats them differently. Price alerts are tactical. Thesis alerts are strategic.
-
-The weekly AI-generated report forces a structured review of whether the original investment rationale still holds, using current data and news.
+El sistema avisa cuando `tesis.json` está desactualizado (más de 120 días desde la última actualización, o no actualizado dentro de los 14 días posteriores a un earnings).
 
 ---
 
-*Automated report. Not financial advice.*
+## Por qué existe este proyecto
+
+Quería un sistema que distinguiera entre dos tipos de riesgo muy distintos:
+
+1. **Riesgo de precio** — la acción baja. Se maneja con niveles de stop loss. No es necesariamente razón para vender si la tesis está intacta.
+2. **Riesgo de tesis** — la razón fundamental para tener la acción se rompe. Esta es la razón real para salir.
+
+La mayoría de las herramientas de portafolio retail alertan sobre precio. Esta alerta sobre ambos — y los trata de forma diferente. Las alertas de precio son tácticas. Las alertas de tesis son estratégicas.
+
+El informe semanal generado por IA fuerza una revisión estructurada de si la tesis de inversión original sigue vigente, usando datos actuales y noticias recientes.
+
+---
+
+*Informe automático. No constituye asesoramiento financiero.*
