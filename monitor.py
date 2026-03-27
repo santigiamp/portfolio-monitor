@@ -121,7 +121,15 @@ def evaluar_tesis(tesis_data):
         en_riesgo = 0
 
         for metrica_key, cfg in umbrales.items():
-            valor = metricas.get(metrica_key)
+            valor_raw = metricas.get(metrica_key)
+            if valor_raw is None:
+                valor = None
+            else:
+                try:
+                    valor = float(valor_raw)
+                except (TypeError, ValueError):
+                    print(f"Warning: valor no numerico en tesis.json para {symbol}.{metrica_key}: {valor_raw!r}")
+                    valor = None
             if valor is None:
                 checks.append({
                     "label": cfg["label"],
@@ -321,7 +329,7 @@ def analizar_cambio_paradigma(noticias, client=None):
     )
 
     # Solo titulos de noticias para minimizar tokens
-    titulos = [n["titulo"] for n in noticias[:30]]
+    titulos = [n["titulo"][:200] for n in noticias[:30]]
     noticias_ctx = json.dumps(titulos, ensure_ascii=False)
 
     prompt = f"""Eres un analista vigilando señales de cambio de paradigma en computacion de IA.
@@ -358,19 +366,8 @@ Responde UNICAMENTE con JSON valido:
         messages=[{"role": "user", "content": prompt}],
     )
 
-    text = ""
-    for block in message.content:
-        if hasattr(block, "text"):
-            text += block.text
-
-    text = text.strip()
-    if "```json" in text:
-        text = text.split("```json")[1].split("```")[0].strip()
-    elif "```" in text:
-        text = text.split("```")[1].split("```")[0].strip()
-
     try:
-        return json.loads(text)
+        return _parse_json_from_claude(_extract_text_from_claude(message))
     except Exception:
         # Fallback si el JSON no parsea
         return {
@@ -467,7 +464,7 @@ def get_market_data():
         precio_ayer = float(hist["Close"].iloc[-2]) if len(hist) > 1 else precio_actual
         cambio_1d = (precio_actual - precio_ayer) / precio_ayer * 100
 
-        precio_semana = float(hist["Close"].iloc[-min(6, len(hist))]) if len(hist) > 1 else precio_actual
+        precio_semana = float(hist["Close"].iloc[-min(5, len(hist))]) if len(hist) > 1 else precio_actual
         cambio_semanal = (precio_actual - precio_semana) / precio_semana * 100
 
         precio_entrada = TICKERS[symbol]["precio_entrada"]
@@ -602,6 +599,20 @@ def evaluar_alertas(data):
 
 # ── Analisis con Claude ───────────────────────────────────────────────────────
 
+def _extract_text_from_claude(message):
+    """Extrae y concatena todos los bloques de texto de una respuesta Claude."""
+    return "".join(block.text for block in message.content if hasattr(block, "text"))
+
+def _parse_json_from_claude(text):
+    """Limpia fences de markdown y parsea JSON."""
+    text = text.strip()
+    if "```json" in text:
+        text = text.split("```json")[1].split("```")[0].strip()
+    elif "```" in text:
+        text = text.split("```")[1].split("```")[0].strip()
+    return json.loads(text)
+
+
 def generar_analisis_claude(data_mercado, noticias, tesis_resultados=None):
     client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
 
@@ -652,7 +663,7 @@ def generar_analisis_claude(data_mercado, noticias, tesis_resultados=None):
         noticias_por_ticker.setdefault(t, [])
         if len(noticias_por_ticker[t]) < 4:  # max 4 noticias por ticker para no exceder rate limit
             noticias_por_ticker[t].append({
-                "titulo": n["titulo"],
+                "titulo": n["titulo"][:200],
                 "fecha": n["fecha"],
             })
 
@@ -709,13 +720,7 @@ Responde UNICAMENTE con JSON valido, sin texto adicional:
         messages=[{"role": "user", "content": prompt}],
     )
 
-    text = message.content[0].text.strip()
-    if "```json" in text:
-        text = text.split("```json")[1].split("```")[0].strip()
-    elif "```" in text:
-        text = text.split("```")[1].split("```")[0].strip()
-
-    return json.loads(text)
+    return _parse_json_from_claude(_extract_text_from_claude(message))
 
 
 # ── HTML helpers ─────────────────────────────────────────────────────────────
@@ -915,11 +920,13 @@ def generar_html_informe_semanal(data, alertas):
     print("Analizando señales de cambio de paradigma...")
     analisis_paradigma = None
     nivel_paradigma = "VERDE"
+    paradigma_ok = False
     for intento in range(2):
         try:
             analisis_paradigma = analizar_cambio_paradigma(noticias)
             nivel_paradigma = analisis_paradigma.get("nivel_global", "VERDE")
             print(f"Paradigma: {nivel_paradigma}")
+            paradigma_ok = True
             break
         except anthropic.RateLimitError:
             if intento == 0:
@@ -931,8 +938,11 @@ def generar_html_informe_semanal(data, alertas):
             print(f"Error en analisis de paradigma: {e}")
             break
 
-    print("Esperando 62s antes de segunda llamada a Claude (rate limit)...")
-    time.sleep(62)
+    if paradigma_ok:
+        print("Esperando 62s antes de segunda llamada a Claude (rate limit)...")
+        time.sleep(62)
+    else:
+        print("Primera llamada Claude fallida, omitiendo sleep de rate limit.")
 
     print("Generando analisis con Claude...")
     for intento in range(2):
@@ -1201,7 +1211,8 @@ def run_alertas_diarias():
     nivel_paradigma = "VERDE"
     if date.today().weekday() == 0:  # lunes: chequeo semanal de paradigma
         try:
-            analisis_paradigma = analizar_cambio_paradigma()
+            noticias_paradigma = get_news()
+            analisis_paradigma = analizar_cambio_paradigma(noticias_paradigma)
             nivel_paradigma = analisis_paradigma.get("nivel_global", "VERDE")
             print(f"Paradigma (chequeo lunes): {nivel_paradigma}")
         except Exception as e:
